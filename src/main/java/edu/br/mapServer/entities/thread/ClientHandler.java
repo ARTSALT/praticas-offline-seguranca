@@ -97,24 +97,37 @@ public class ClientHandler implements Runnable {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else if (Pattern.matches("registrador:", message) && message.length() == 32) {
+        } else if (message.contains("registrador")) {
             // Registrador
             String[] parts = message.split(" ");
-            String cmd = parts[0].substring(0, parts[0].length() - 1); // "registrador"
+            String cmd = parts[0].substring(0, parts[0].length() - 2); // "registrador"
             String server = parts[1]; // "serverX"
             String ip = parts[2]; // "192.168.0.x"
 
-            if (cmd.equals("registrador") && Pattern.matches("server[0-9]", server) && Pattern.matches("192\\.168\\.0\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])", ip)) {
+            if (Pattern.matches("server[0-9]", server)) {
                 String oldIp = MapServer.dnsMap.get(server);
                 MapServer.dnsMap.put(server, ip);
 
                 String pushMessage = "Mapeamento atualizado com sucesso.\n" +
-                        "server + \" : \" + oldIp + \" -> \" + server + \" : \" + ip";
+                        server + " : " + oldIp + " -> " + server + " : " + ip;
 
                 System.out.println(pushMessage);
+                MapServer.broadcastUpdate(pushMessage);
             } else {
-                System.out.println("Comando de registro inválido recebido: " + message);
+                String error = "Comando de registro inválido: " + message;
+                System.out.println(error);
+                CipheredMessage cm = cipherer.cifrar(error);
+                cm.setName("Server Error");
+                out.writeObject(error);
+                out.flush();
             }
+        } else {
+            String error = "Mensagem em formato inválido";
+            System.out.println(error);
+            CipheredMessage cm = cipherer.cifrar(error);
+            cm.setName("Server Error");
+            out.writeObject(cm);
+            out.flush();
         }
     }
 }

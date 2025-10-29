@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws NoSuchAlgorithmException {
-        String a = "192.168.0.0";
-        if (Pattern.matches("192\\.168\\.0\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])", a)) {
+        String a = "registrador: server1 192.168.0.200";
+        if (a.contains("registrador")) {
             System.out.println("ok");
         } else {
             System.out.println("nok");

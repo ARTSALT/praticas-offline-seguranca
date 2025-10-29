@@ -16,6 +16,8 @@ public class InputHandler implements Runnable{
 
     private String keyHMAC;
 
+    public static ObjectInputStream in;
+
     public InputHandler(Socket socket, Cipherer cipherer) {
         this.socket = socket;
         this.cipherer = cipherer;
@@ -26,19 +28,20 @@ public class InputHandler implements Runnable{
     @Override
     public void run() {
         try {
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            in = new ObjectInputStream(socket.getInputStream());
 
             // Leitura contínua
             while (connection) {
                 if (socket.isClosed()) {
                     connection = false;
+                    in.close();
                     System.out.println("Conexão encerrada.");
 
                     break;
                 } else {
                     System.out.println("Aguardando mensagens...");
 
-                    Object receivedObject = inputStream.readObject();
+                    Object receivedObject = in.readObject();
                     CipheredMessage cipheredMessage = (CipheredMessage) receivedObject;
 
                     // Autenticar a tag HMAC

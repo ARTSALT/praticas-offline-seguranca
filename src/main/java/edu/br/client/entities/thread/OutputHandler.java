@@ -39,6 +39,7 @@ public class OutputHandler implements Runnable{
 
                 if (mensagem.equalsIgnoreCase("fim")) {
                     connection = false;
+                    outputStream.close();
                     socket.close();
                     System.out.println("Conexão encerrada.");
                     break;

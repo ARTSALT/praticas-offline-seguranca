@@ -34,6 +34,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        new Client("1", "10.215.14.124", 8081);
+        new Client("1", "10.10.70.100", 8081);
     }
 }
+
