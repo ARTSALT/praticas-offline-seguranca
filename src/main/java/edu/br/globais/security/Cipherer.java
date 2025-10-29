@@ -5,6 +5,7 @@ import edu.br.globais.security.entity.CipheredMessage;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Cipherer {
@@ -47,10 +48,14 @@ public class Cipherer {
         return HMAC.hMac(keyHMAC, tagMkr);
     }
 
-    public boolean autenticarHMAC(byte[], byte[] cipheredText, byte[] tagHMAC) throws Exception {
-        byte[] tagCalculada = gerarTagHMAC(iv, cipheredText);
-        return HMAC.compararTags(tagHMAC, tagCalculada);
+    public boolean autenticarHMAC(byte[] vi, byte[] cipheredText, byte[] tagHMAC) throws Exception {
+        byte[] textoCifrado = cipheredText;
+        byte[] tagMkr = new byte[vi.length + textoCifrado.length];
+        System.arraycopy(vi, 0, tagMkr, 0, vi.length);
+        System.arraycopy(textoCifrado, 0, tagMkr, vi.length, textoCifrado.length);
+        byte[] tagHMACCalculada = HMAC.hMac(keyHMAC, tagMkr);
 
+        return MessageDigest.isEqual(tagHMAC, tagHMACCalculada);
     }
 
     private static SecretKey gerarChave(int t, String alg) throws NoSuchAlgorithmException {
