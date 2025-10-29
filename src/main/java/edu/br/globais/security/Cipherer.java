@@ -24,11 +24,7 @@ public class Cipherer {
         AES aes = new AES(keyAES);
         byte[] textoCifrado = aes.cifrar(mensagem);
 
-        byte[] vi = aes.getVi();
-        byte[] tagMkr = new byte[vi.length + textoCifrado.length];
-        System.arraycopy(vi, 0, tagMkr, 0, vi.length);
-        System.arraycopy(textoCifrado, 0, tagMkr, vi.length, textoCifrado.length);
-        byte[] tagHMAC = HMAC.hMac(keyHMAC, tagMkr);
+        byte[] tagHMAC = gerarTagHMAC(aes.getVi(),  textoCifrado);
 
         return new CipheredMessage(
                 textoCifrado,
@@ -42,6 +38,19 @@ public class Cipherer {
         byte[] textoDecifrado = aes.decifrar(cipheredMessage.getCipheredText());
 
         return new String(textoDecifrado);
+    }
+
+    public byte[] gerarTagHMAC(byte[] vi, byte[] cipheredText) throws Exception {
+        byte[] tagMkr = new byte[vi.length + cipheredText.length];
+        System.arraycopy(vi, 0, tagMkr, 0, vi.length);
+        System.arraycopy(cipheredText, 0, tagMkr, vi.length, cipheredText.length);
+        return HMAC.hMac(keyHMAC, tagMkr);
+    }
+
+    public boolean autenticarHMAC(byte[], byte[] cipheredText, byte[] tagHMAC) throws Exception {
+        byte[] tagCalculada = gerarTagHMAC(iv, cipheredText);
+        return HMAC.compararTags(tagHMAC, tagCalculada);
+
     }
 
     private static SecretKey gerarChave(int t, String alg) throws NoSuchAlgorithmException {
