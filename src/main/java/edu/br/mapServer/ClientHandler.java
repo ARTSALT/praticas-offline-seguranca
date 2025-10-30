@@ -1,7 +1,7 @@
 package edu.br.mapServer;
 
-import edu.br.globais.security.Cipherer;
-import edu.br.globais.security.entity.CipheredMessage;
+import edu.br.global.security.Cipherer;
+import edu.br.global.security.entity.CipheredMessage;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,7 +37,6 @@ public class ClientHandler implements Runnable{
 
                         if (MapServer.serviceRegistry.containsKey(serviceName)) {
                             String serverIp = MapServer.serviceRegistry.get(serviceName).get(MapServer.roundRobin());
-                            System.out.println("Serviço requisitado: " + serviceName);
                             System.out.println("Servidor descoberto: " + serverIp);
 
                             CipheredMessage cr = cipherer.cifrar(serverIp);
@@ -55,12 +54,36 @@ public class ClientHandler implements Runnable{
                     } else {
                         System.out.println("Formato inválido para descoberta.");
                     }
+                } else if (mensagemDecifrada.startsWith("post ")) {
+                    String[] parts = mensagemDecifrada.split(" "); // post soma subtracao multiplicacao divisao IP:port
+
+                    for (int i = 1; i < parts.length - 1; i++) {
+                        if (!MapServer.serviceRegistry.get(parts[i]).contains(parts[parts.length - 1])) {
+                            MapServer.serviceRegistry.get(parts[i]).add(parts[parts.length - 1]);
+                        }
+                    }
+
+                    CipheredMessage cr = cipherer.cifrar("Service registered successfully");
+                    cr.setName("ServiceRegistrationResponse");
+                    out.writeObject(cr);
+                    out.flush();
+
+                    in.close();
+                    out.close();
+                    clientSocket.close();
                 }
             } else {
                 System.out.println("Falha na autenticação HMAC.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            out.writeObject(cipherer.cifrar("Invalid Request"));
+            out.flush();
+            in.close();
+            out.close();
+            clientSocket.close();
+
+        } catch (Exception ignored) {
+
         }
     }
 }

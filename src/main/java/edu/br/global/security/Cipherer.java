@@ -1,7 +1,7 @@
-package edu.br.globais.security;
+package edu.br.global.security;
 
-import edu.br.globais.KeyManager;
-import edu.br.globais.security.entity.CipheredMessage;
+import edu.br.global.KeyManager;
+import edu.br.global.security.entity.CipheredMessage;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -16,9 +16,7 @@ public class Cipherer {
     public Cipherer(String code) {
         km = new KeyManager();
         keyAES = KeyManager.getKeyAES(code);
-        System.out.println(keyAES);
         keyHMAC = KeyManager.getKeyHMAC(code);
-        System.out.println(keyHMAC);
     }
 
     public CipheredMessage cifrar(String mensagem) throws Exception {

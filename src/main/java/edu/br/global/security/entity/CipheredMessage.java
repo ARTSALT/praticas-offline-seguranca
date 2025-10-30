@@ -1,4 +1,4 @@
-package edu.br.globais.security.entity;
+package edu.br.global.security.entity;
 
 import java.io.Serializable;
 

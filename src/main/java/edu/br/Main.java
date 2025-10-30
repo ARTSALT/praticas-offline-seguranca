@@ -2,19 +2,19 @@ package edu.br;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.lang.reflect.Array;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        String a = "registrador: server1 192.168.0.200";
-        if (a.contains("registrador")) {
-            System.out.println("ok");
-        } else {
-            System.out.println("nok");
-        }
+    public static void main(String[] args) throws UnknownHostException {
+        String a = Inet4Address.getLocalHost().toString().substring(16);
+        System.out.println(a);
     }
 
     private static SecretKey gerarChave(int t, String alg) throws NoSuchAlgorithmException {

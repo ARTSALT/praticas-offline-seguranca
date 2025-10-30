@@ -1,9 +1,7 @@
 package edu.br.mapServer;
 
-import edu.br.client.Client;
-import edu.br.globais.security.entity.CipheredMessage;
-
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +17,8 @@ public class MapServer {
 
     public static ConcurrentHashMap<String, CopyOnWriteArrayList<String>> serviceRegistry = new ConcurrentHashMap<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
         serviceRegistry.put("soma", new CopyOnWriteArrayList<>());
         serviceRegistry.put("subtracao", new CopyOnWriteArrayList<>());
         serviceRegistry.put("multiplicacao", new CopyOnWriteArrayList<>());
@@ -35,8 +34,6 @@ public class MapServer {
 
                 executor.submit(new ClientHandler(socket));
             }
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

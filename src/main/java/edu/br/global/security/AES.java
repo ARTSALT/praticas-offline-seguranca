@@ -1,8 +1,7 @@
-package edu.br.globais.security;
+package edu.br.global.security;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class AES {

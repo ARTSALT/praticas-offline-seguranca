@@ -1,4 +1,4 @@
-package edu.br.globais.security;
+package edu.br.global.security;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

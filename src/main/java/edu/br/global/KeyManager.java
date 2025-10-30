@@ -1,11 +1,11 @@
-package edu.br.globais;
+package edu.br.global;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
-import static edu.br.globais.security.HMAC.hex2Byte;
+import static edu.br.global.security.HMAC.hex2Byte;
 
 public class KeyManager {
     private static final Map<String, SecretKey> chavesAES = new HashMap<>();
@@ -59,8 +59,8 @@ public class KeyManager {
 
         byte[] aes10 = hex2Byte("a70e6396025cba129757e0d087ce0801f282cab2436746eb9c0f2d8f8268dffc");
 
-        chavesAES.put("registrador", new SecretKeySpec(aes10, 0, aes10.length, "AES"));
-        chavesHMAC.put("registrador", "3edbdd2e8de917277a20ab9b548243da5a816329e79be0afc062e33ce659eafe");
+        chavesAES.put("server", new SecretKeySpec(aes10, 0, aes10.length, "AES"));
+        chavesHMAC.put("server", "3edbdd2e8de917277a20ab9b548243da5a816329e79be0afc062e33ce659eafe");
     }
 
     public static SecretKey getKeyAES(String clientName) {
