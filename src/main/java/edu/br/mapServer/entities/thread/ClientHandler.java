@@ -56,9 +56,16 @@ public class ClientHandler implements Runnable {
                         // Processa a mensagem recebida
                         handleMessage(message, cipherer);
                     } else {
-                        System.out.println("Falha na autenticação da mensagem recebida.");
-                        System.out.println("Tag HMAC inválida.");
-                        System.out.println("Mensagem descartada.");
+                        String response = """
+                                Falha na autenticação da mensagem recebida.
+                                Tag HMAC inválida.
+                                Mensagem descartada.""";
+                        System.out.println(response);
+                        CipheredMessage cr = cipherer.cifrar(response);
+                        cr.setName("Server Error");
+
+                        out.writeObject(cr);
+                        out.flush();
                     }
                 }
             }

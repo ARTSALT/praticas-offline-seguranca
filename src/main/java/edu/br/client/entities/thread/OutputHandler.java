@@ -49,6 +49,10 @@ public class OutputHandler implements Runnable{
                     cipheredMessage.setName(name);
 
                     // Enviar a mensagem cifrada
+
+                    // Teste de envio de objeto sem HMAC
+                    //cipheredMessage.setTag(null);
+
                     outputStream.writeObject(cipheredMessage);
                     outputStream.flush();
                     System.out.println("Mensagem enviada com sucesso.");
