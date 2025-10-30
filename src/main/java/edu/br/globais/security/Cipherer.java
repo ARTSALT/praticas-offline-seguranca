@@ -13,11 +13,11 @@ public class Cipherer {
     private SecretKey keyAES;
     private KeyManager km;
 
-    public Cipherer(String nome) {
+    public Cipherer(String code) {
         km = new KeyManager();
-        keyAES = KeyManager.getKeyAES(nome);
+        keyAES = KeyManager.getKeyAES(code);
         System.out.println(keyAES);
-        keyHMAC = KeyManager.getKeyHMAC(nome);
+        keyHMAC = KeyManager.getKeyHMAC(code);
         System.out.println(keyHMAC);
     }
 
