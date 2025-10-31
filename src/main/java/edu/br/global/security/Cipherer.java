@@ -15,6 +15,7 @@ public class Cipherer {
 
     public Cipherer(String code) {
         km = new KeyManager();
+        System.out.println(code);
         keyAES = KeyManager.getKeyAES(code);
         keyHMAC = KeyManager.getKeyHMAC(code);
     }

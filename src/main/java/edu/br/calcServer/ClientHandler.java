@@ -2,7 +2,6 @@ package edu.br.calcServer;
 
 import edu.br.global.security.Cipherer;
 import edu.br.global.security.entity.CipheredMessage;
-import edu.br.mapServer.MapServer;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
